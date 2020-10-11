@@ -19,34 +19,21 @@ const useStyles = makeStyles((theme) => ({
 export default function CountryHeader() {
   const classes = useStyles();
 
-  const [data, setData] = useState();
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   
-  useEffect(() => {
-    async function fetchData() {
+  useEffect(()=>{
+    getData()
+  }, [])
 
-      setLoading(true);
-  
-      const apiData = await fetch(
-        "https://api.thevirustracker.com/free-api?countryTotals=ALL"
-      );
-  
-      let apiJson = await apiData.json();
-    
-      apiJson = apiJson.countryitems;
-  
-      setData(apiJson);
-  
-      setLoading(false)
-  
-    }
-
-    fetchData()
-
-  }, []);
-
-
-console.log(data);
+  const getData = async () => {
+    setLoading(true);
+    const response = await fetch(`https://api.thevirustracker.com/free-api?countryTotals=ALL`)
+    const apiData = await response.json()
+    setData(apiData.countryitems[0])
+    console.log (apiData.countryitems[0])
+    setLoading(false)
+  } 
 
   if(loading){
     return <div>Loading</div>
@@ -58,7 +45,11 @@ console.log(data);
           <Typography variant="h6" className={classes.title}>
             COUNTRY DATA
           </Typography>
-          <SelectCountry />
+          {/* {Object.keys(data).map(key => ( */}
+            {/* // console.log(data[key].title) */}
+
+            <SelectCountry data={data}/>
+          {/* ))} */}
         </Toolbar>
       </AppBar>
     </div>
