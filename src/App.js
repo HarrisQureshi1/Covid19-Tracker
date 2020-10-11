@@ -8,6 +8,7 @@ function App() {
     <>
       <MainHeader />
       <MainGrid />
+      <div> hello</div>
     </>
   );
 }
