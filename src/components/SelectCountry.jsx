@@ -1,10 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 // const options = ["Global", "Country", "Country1"];
 
@@ -25,30 +22,53 @@ export default function SelectCountry(props) {
   ))
 
   console.log(options)
-  // const [value, setValue] = useState(options[0]);
-  // const [inputValue, setInputValue] = useState("");
+  const [value, setValue] = React.useState(options[0]);
+  const [inputValue, setInputValue] = React.useState('');
 
-  const classes = useStyles();
-  const [age, setAge] = React.useState('');
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
 
     return (
       <div style={{ color: "#112d4e" }}>
-        <FormControl className={classes.formControl}>
-        <InputLabel id="demo-simple-select-label">Age</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={age}
-          onChange={handleChange}
-        >
-          {Object.keys(props.data).map(key => ( 
-    <MenuItem key={props.data[key].ourid} value={props.data[key].title}>{props.data[key].title}</MenuItem>))}
-        </Select>
-      </FormControl>
+        <div>{`value: ${value !== null ? `'${value}'` : 'null'}`}</div>
+          <div>{`inputValue: '${inputValue}'`}</div>
+          <br />
+          <Autocomplete
+            value={value}
+            onChange={(event, newValue) => {
+              setValue(newValue);
+            }}
+            inputValue={inputValue}
+            onInputChange={(event, newInputValue) => {
+              setInputValue(newInputValue);
+            }}
+            id="controllable-states-demo"
+            options={options}
+            style={{ width: 300 }}
+            renderInput={(params) => <TextField {...params} label="Controllable" variant="outlined" />}
+          />
+
+<Autocomplete
+            id="size-small-standard"
+            size="small"
+            options={options}
+            getOptionLabel={option => (option.title ? option.title : "")}
+            value={value}
+            onChange={(event, newValue) => {
+              setValue(newValue);
+            }}
+            onInputChange={(event, newInputValue) => {
+              setInputValue(newInputValue);
+            }}
+            renderInput={params => (
+              <TextField
+                {...params}
+                variant="standard"
+                label="Size small"
+                placeholder="Favorites"
+                fullWidth
+              />
+            )}
+          />
 
       </div>
     );
